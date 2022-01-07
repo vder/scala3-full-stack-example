@@ -15,12 +15,11 @@ lazy val webserver = project
   .in(file("webserver"))
   .settings(
     libraryDependencies ++= Seq(
-      "com.typesafe.akka" %% "akka-http" % "10.2.6" cross CrossVersion.for3Use2_13,
-      "com.typesafe.akka" %% "akka-stream" % "2.6.16" cross CrossVersion.for3Use2_13,
       "org.scalameta" %% "munit" % "0.7.29" % Test,
       "org.http4s" %% "http4s-blaze-server" % "0.23.7",
       "org.http4s" %% "http4s-dsl" % "0.23.7",
-      "org.http4s" %% "http4s-circe" % "0.23.7"
+      "org.http4s" %% "http4s-circe" % "0.23.7",
+      "org.typelevel" %% "cats-effect" % "3.3.3"
     ),
     Compile / resourceGenerators += Def.task {
       val source = (webpage / Compile / scalaJSLinkedFile).value.data
