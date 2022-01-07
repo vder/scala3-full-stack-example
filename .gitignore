@@ -2,3 +2,5 @@ target/
 .bloop/
 .idea/
 .bsp/
+.history/
+.metals/

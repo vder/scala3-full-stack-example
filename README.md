@@ -1,4 +1,10 @@
-# Example full-stack Scala 3 project
+# fullstack scala 3
+
+http4s version of scala 3 fullstack app prepared by Adrien Piquerez and available here https://github.com/adpi2/scala3-full-stack-example 
+
+Below is original readme.MD
+
+## Example full-stack Scala 3 project
 
 These days, full-stack development in Scala is a widespread reality.
 
