@@ -20,11 +20,11 @@ import org.http4s.circe.*
 import org.http4s.EntityDecoder
 import java.nio.file.Paths
 
-final class Http4sRoutes[F[_]: Async: MonadThrow: Files]:
+final class Http4sRoutes[F[_]: Async: MonadThrow: Files](
+    repository: example.NoteService[F]
+):
   val dsl = new Http4sDsl[F] {}
   import dsl.*
-
-  val repository = Repository(Paths.get("./target/data/"))
 
   given EntityDecoder[F, CreateNote] = jsonOf
 
@@ -46,19 +46,14 @@ final class Http4sRoutes[F[_]: Async: MonadThrow: Files]:
   val apiRoutes: HttpRoutes[F] =
     HttpRoutes.of[F] {
       case request @ GET -> Root / "notes" =>
-        Async[F]
-          .fromFuture(Async[F].delay(repository.getAllNotes()))
+        repository
+          .getAllNotes()
           .flatMap(x => Ok(x.asJson))
 
       case request @ POST -> Root / "notes" =>
         for
           noteCreated <- request.as[CreateNote]
-          note <- Async[F]
-            .fromFuture(
-              Async[F].delay(
-                repository.createNote(noteCreated.title, noteCreated.content)
-              )
-            )
+          note <- repository.createNote(noteCreated.title, noteCreated.content)
           resp <- Created(note.asJson)
         yield resp
     }
@@ -69,5 +64,7 @@ final class Http4sRoutes[F[_]: Async: MonadThrow: Files]:
   )
 
 object Http4sRoutes:
-  def make[F[_]: Async: MonadThrow: Files] =
-    Sync[F].delay(new Http4sRoutes())
+  def make[F[_]: Async: MonadThrow: Files](
+      repository: example.NoteService[F]
+  ) =
+    Sync[F].delay(new Http4sRoutes(repository))

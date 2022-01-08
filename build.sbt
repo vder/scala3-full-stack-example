@@ -20,7 +20,10 @@ lazy val webserver = project
       "org.http4s" %% "http4s-blaze-server" % "0.23.7",
       "org.http4s" %% "http4s-dsl" % "0.23.7",
       "org.http4s" %% "http4s-circe" % "0.23.7",
-      "org.typelevel" %% "cats-effect" % "3.3.3"
+      "org.typelevel" %% "cats-effect" % "3.3.3",
+      "co.fs2" %% "fs2-core" % "3.2.4",
+      "co.fs2" %% "fs2-io" % "3.2.4",
+      "io.circe" %% "circe-fs2" % "0.14.0"
     ),
     Compile / resourceGenerators += Def.task {
       val source = (webpage / Compile / scalaJSLinkedFile).value.data

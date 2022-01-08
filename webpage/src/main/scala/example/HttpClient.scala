@@ -15,17 +15,17 @@ import io.circe.Printer
 
 import cats.syntax.either.*
 
-class HttpClient(using ExecutionContext) extends NoteService:
+class HttpClient(using ExecutionContext) extends NoteService[Future]:
   private val printer: Printer = Printer(
     dropNullValues = true,
     indent = ""
   )
 
-  def getAllNotes(): Future[Seq[Note]] =
+  def getAllNotes(): Future[List[Note]] =
     for
       resp <- Fetch.fetch("./api/notes").toFuture
       json <- resp.jsonOrFailure
-    yield decodeJs[Seq[Note]](json).valueOr(throw _)
+    yield decodeJs[List[Note]](json).valueOr(throw _)
 
   def createNote(title: String, content: String): Future[Note] =
     val request = Request(
