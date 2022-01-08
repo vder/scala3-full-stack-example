@@ -1,47 +1,45 @@
 package example
 
-import org.scalajs.dom.html.Element
-import org.scalajs.dom.document
-import org.scalajs.dom.html.*
-
-import DomHelper.*
-
 import scala.concurrent.ExecutionContext
-import scala.util.control.NonFatal
+import org.scalajs.dom
+import dom.html
+import scalajs.js.annotation.JSExport
+import scalatags.JsDom.all.*
+import org.scalajs.dom.*
 
 object WebPage:
   given ExecutionContext = ExecutionContext.global
   val service = new HttpClient()
 
-  val titleInput = input()
-  val contentTextArea = textarea()
+  val titleInput = input(`type` := "text").render
+  val contentTextArea = textarea.render
+  val saveButton = button("Create Note").render
 
-  val saveButton = button("Create Note")
-  saveButton.onclick = _ =>
-    service
-      .createNote(titleInput.value, contentTextArea.value)
-      .map(addNote)
-
-  val form: Div = div(
+  val form = div(
+    cls := "note-form",
     titleInput,
     contentTextArea,
     saveButton
   )
-  form.className = "note-form"
 
-  val appContainer: Div = div(
+  val appContainer = div(
+    id := "app-container",
     h1("My Notepad"),
     form
-  )
-  appContainer.id = "app-container"
+  ).render
 
   def addNote(note: Note): Unit =
     val elem = div(
+      cls := "note",
       h2(note.title),
       p(note.content)
-    )
-    elem.className = "note"
+    ).render
     appContainer.appendChild(elem)
+
+  saveButton.onclick = (e: dom.Event) =>
+    service
+      .createNote(titleInput.value, contentTextArea.value)
+      .map(addNote)
 
   @main def start: Unit =
     document.body.appendChild(appContainer)

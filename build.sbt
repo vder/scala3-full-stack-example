@@ -6,7 +6,8 @@ lazy val webpage = project
   .settings(
     scalaJSUseMainModuleInitializer := true,
     libraryDependencies ++= Seq(
-      "org.scala-js" %%% "scalajs-dom" % "2.1.0"
+      "org.scala-js" %%% "scalajs-dom" % "2.1.0",
+      "com.lihaoyi" %%% "scalatags" % "0.11.0"
     )
   )
   .dependsOn(core.js)

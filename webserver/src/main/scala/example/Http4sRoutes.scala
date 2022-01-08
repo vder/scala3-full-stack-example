@@ -52,12 +52,14 @@ final class Http4sRoutes[F[_]: Async: MonadThrow: Files]:
 
       case request @ POST -> Root / "notes" =>
         for
-          note <- request.as[CreateNote]
-          _ <- Async[F]
+          noteCreated <- request.as[CreateNote]
+          note <- Async[F]
             .fromFuture(
-              Async[F].delay(repository.createNote(note.title, note.content))
+              Async[F].delay(
+                repository.createNote(noteCreated.title, noteCreated.content)
+              )
             )
-          resp <- Created()
+          resp <- Created(note.asJson)
         yield resp
     }
 
