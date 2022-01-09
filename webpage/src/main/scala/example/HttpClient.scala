@@ -2,45 +2,38 @@ package example
 
 import org.scalajs.dom.*
 import scala.scalajs.js
-
 import java.io.IOException
-
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext
-
 import io.circe.scalajs.*
 import io.circe.syntax.*
 import io.circe.parser.decode
 import io.circe.Printer
-
+import sttp.client3.UriContext
 import cats.syntax.either.*
+import sttp.tapir.client.sttp.SttpClientInterpreter
+import sttp.client3.impl.cats.FetchCatsBackend
+import sttp.client3.FetchBackend
 
-class HttpClient(using ExecutionContext) extends NoteService[Future]:
-  private val printer: Printer = Printer(
-    dropNullValues = true,
-    indent = ""
-  )
+object HttpClient extends NoteService[Future]:
+
+  private val uri = Some(uri"${endpoints.notePrefix}")
+  private val backend = FetchBackend()
+  private val allNotesCall =
+    SttpClientInterpreter().toClientThrowErrors(
+      endpoints.allNotes,
+      uri,
+      backend
+    )
+  private val createNoteCall =
+    SttpClientInterpreter().toClientThrowErrors(
+      endpoints.createNote,
+      uri,
+      backend
+    )
 
   def getAllNotes(): Future[List[Note]] =
-    for
-      resp <- Fetch.fetch("./api/notes").toFuture
-      json <- resp.jsonOrFailure
-    yield decodeJs[List[Note]](json).valueOr(throw _)
+    allNotesCall(())
 
   def createNote(title: String, content: String): Future[Note] =
-    val request = Request(
-      "./api/notes",
-      new:
-        method = HttpMethod.POST
-        headers = js.Dictionary("Content-Type" -> "application/json")
-        body = printer.print(CreateNote(title, content).asJson)
-    )
-    for
-      resp <- Fetch.fetch(request).toFuture
-      json <- resp.jsonOrFailure
-    yield decodeJs[Note](json).valueOr(throw _)
-
-  extension (resp: Response)
-    private def jsonOrFailure: Future[js.Any] =
-      if resp.ok then resp.json().toFuture
-      else Future.failed(new IOException(resp.statusText))
+    createNoteCall(CreateNote(title, content))

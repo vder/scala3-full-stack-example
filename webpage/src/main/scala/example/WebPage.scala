@@ -9,7 +9,6 @@ import org.scalajs.dom.*
 
 object WebPage:
   given ExecutionContext = ExecutionContext.global
-  val service = new HttpClient()
 
   val titleInput = input(`type` := "text").render
   val contentTextArea = textarea.render
@@ -37,11 +36,11 @@ object WebPage:
     appContainer.appendChild(elem)
 
   saveButton.onclick = (e: dom.Event) =>
-    service
+    HttpClient
       .createNote(titleInput.value, contentTextArea.value)
       .map(addNote)
 
   @main def start: Unit =
     document.body.appendChild(appContainer)
 
-    for notes <- service.getAllNotes(); note <- notes do addNote(note)
+    for notes <- HttpClient.getAllNotes(); note <- notes do addNote(note)
