@@ -1,6 +1,15 @@
 # fullstack scala 3
 
-http4s version of scala 3 fullstack app prepared by Adrien Piquerez and available here https://github.com/adpi2/scala3-full-stack-example 
+Functional version of scala 3 fullstack app prepared by Adrien Piquerez and available here https://github.com/adpi2/scala3-full-stack-example
+used techstack:
+
+- scala3
+- CE 3
+- circe
+- http4s
+- munit
+- scalatags
+- tapir & sttp
 
 Below is original readme.MD
 

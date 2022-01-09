@@ -43,6 +43,7 @@ lazy val webserver = project
       "org.http4s" %% "http4s-circe" % http4sVersion,
       "org.http4s" %% "http4s-dsl" % http4sVersion,
       "org.scalameta" %% "munit" % "0.7.29" % Test,
+      "org.typelevel" %% "munit-cats-effect-3" % "1.0.7" % Test,
       "org.typelevel" %% "cats-effect" % "3.3.3"
     ),
     scalacOptions ++= scalacOpt,
