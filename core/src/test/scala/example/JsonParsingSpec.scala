@@ -5,19 +5,15 @@ import io.circe.syntax.*
 import io.circe.Printer
 
 class JsonParsingSpec extends munit.FunSuite:
-  private val printer: Printer = Printer(
-    dropNullValues = true,
-    indent = ""
-  )
 
   test("parse Note") {
     val note = Note("1234", "Hello, world!", "Nice to meet you")
-    val json = printer.print(note.asJson)
+    val json = note.asJson.noSpaces
     assertEquals(parser.decode[Note](json), Right(note))
   }
 
   test("parse CreateNote") {
     val createNote = CreateNote("Hello, world!", "Nice to meet you")
-    val json = printer.print(createNote.asJson)
+    val json = createNote.asJson.noSpaces
     assertEquals(parser.decode[CreateNote](json), Right(createNote))
   }

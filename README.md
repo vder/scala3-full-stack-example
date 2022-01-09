@@ -1,6 +1,16 @@
 # fullstack scala 3
 
-http4s version of scala 3 fullstack app prepared by Adrien Piquerez and available here https://github.com/adpi2/scala3-full-stack-example 
+Functional version of scala 3 fullstack app prepared by Adrien Piquerez and available here <https://github.com/adpi2/scala3-full-stack-example>
+
+used techstack:
+
+- scala3
+- CE 3
+- circe
+- http4s
+- munit
+- scalatags
+- tapir & sttp
 
 Below is original readme.MD
 
@@ -31,4 +41,4 @@ sbt:scala3-full-stack-example> webserver / run
 [info] Server online at http://localhost:8080/
 ```
 
-Then open the http://localhost:8080 page in your favorite browser.
+Then open the <http://localhost:8080> page in your favorite browser.
