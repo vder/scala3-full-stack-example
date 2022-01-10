@@ -18,6 +18,10 @@ import org.http4s.dsl.Http4sDsl
 import org.http4s.implicits.*
 import org.http4s.server.Router
 import sttp.tapir.server.http4s.Http4sServerInterpreter
+import org.http4s.dsl.request
+import org.http4s.Request
+import org.http4s.Response
+import java.util.UUID
 
 final class Http4sRoutes[F[_]: Async: MonadThrow: Files](
     repository: example.NoteService[F]
@@ -31,6 +35,15 @@ final class Http4sRoutes[F[_]: Async: MonadThrow: Files](
 
   private[this] val apiPrefixPath = "/api/"
 
+  val cookieName = "sessionId"
+  def addCookie(request: Request[F])(response: Response[F]): Response[F] =
+    request.cookies
+      .find(_.name == cookieName)
+      .fold(
+        response
+          .addCookie(cookieName, "SesJa" + UUID.randomUUID().toString, None)
+      )(_ => response)
+
   val staticRoutes: HttpRoutes[F] =
     HttpRoutes.of[F] {
 
@@ -41,6 +54,7 @@ final class Http4sRoutes[F[_]: Async: MonadThrow: Files](
       case request @ GET -> Root =>
         StaticFile
           .fromResource("index.html", Some(request))
+          .map(addCookie(request))
           .getOrElseF(NotFound())
     }
 

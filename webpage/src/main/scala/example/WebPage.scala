@@ -14,6 +14,13 @@ object WebPage:
   val contentTextArea = textarea.render
   val saveButton = button("Create Note").render
 
+  val cookieValue = document.cookie
+    .split(";")
+    .find(_.startsWith("sessionId="))
+    .fold("BRAK")(cookie => cookie.substring(10))
+
+  val statusDiv = div(cls := "status-div", h2(cookieValue))
+
   val form = div(
     cls := "note-form",
     titleInput,
@@ -42,5 +49,6 @@ object WebPage:
 
   @main def start: Unit =
     document.body.appendChild(appContainer)
+    document.body.appendChild(statusDiv.render)
 
-    for notes <- HttpClient.getAllNotes(); note <- notes do addNote(note)
+  for notes <- HttpClient.getAllNotes(); note <- notes do addNote(note)

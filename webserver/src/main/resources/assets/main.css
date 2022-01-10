@@ -16,7 +16,8 @@ h1 {
   text-shadow: rgb(0 43 54 / 10%) 2px 2px 0;
 }
 
-.note, .note-form {
+.note,
+.note-form {
   background-color: white;
   border-radius: 0.4rem;
   padding: 1rem;
@@ -24,6 +25,19 @@ h1 {
   color: #224951;
   margin: 1rem 0;
   border-radius: 0.4rem;
+}
+
+.status-div {
+  background-color: white;
+  border-radius: 0.4rem;
+  padding: 1rem;
+  font-family: 'Lato', sans-serif;
+  color: #224951;
+  margin: 1rem 0;
+  border-radius: 0.4rem;
+  position: absolute;
+  top: 5%;
+  right: 5%;
 }
 
 input {

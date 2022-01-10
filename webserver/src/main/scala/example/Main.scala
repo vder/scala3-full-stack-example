@@ -8,15 +8,18 @@ import org.http4s.implicits.*
 import org.http4s.server.staticcontent.*
 import cats.implicits.*
 import fs2.io.file.Path
+import ciris.*
 
 object Main extends IOApp.Simple:
+
   def run =
     for
+      port <- env("PORT").map(_.toIntOption).load[IO]
       repo <- FileRepository[IO](Path("./target/data/"))
       routes <- Http4sRoutes.make[IO](repo)
       _ <- BlazeServerBuilder[IO]
         .withExecutionContext(global)
-        .bindHttp(8080, "0.0.0.0")
+        .bindHttp(port.getOrElse(8080), "0.0.0.0")
         .withHttpApp(
           routes.routes.orNotFound
         )

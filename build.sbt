@@ -33,6 +33,7 @@ lazy val webpage = project
 
 lazy val webserver = project
   .in(file("webserver"))
+  .enablePlugins(JavaAppPackaging)
   .settings(
     libraryDependencies ++= Seq(
       "co.fs2" %% "fs2-core" % fs2Version,
@@ -44,7 +45,8 @@ lazy val webserver = project
       "org.http4s" %% "http4s-dsl" % http4sVersion,
       "org.scalameta" %% "munit" % "0.7.29" % Test,
       "org.typelevel" %% "munit-cats-effect-3" % "1.0.7" % Test,
-      "org.typelevel" %% "cats-effect" % "3.3.3"
+      "org.typelevel" %% "cats-effect" % "3.3.3",
+      "is.cir" %% "ciris" % "2.3.1"
     ),
     scalacOptions ++= scalacOpt,
     Compile / resourceGenerators += Def.task {
