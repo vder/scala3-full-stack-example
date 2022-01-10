@@ -46,7 +46,8 @@ lazy val webserver = project
       "org.scalameta" %% "munit" % "0.7.29" % Test,
       "org.typelevel" %% "munit-cats-effect-3" % "1.0.7" % Test,
       "org.typelevel" %% "cats-effect" % "3.3.3",
-      "is.cir" %% "ciris" % "2.3.1"
+      "is.cir" %% "ciris" % "2.3.1",
+      "ch.qos.logback" % "logback-classic" % "1.3.0-alpha12"
     ),
     scalacOptions ++= scalacOpt,
     Compile / resourceGenerators += Def.task {

@@ -14,12 +14,12 @@ object Main extends IOApp.Simple:
 
   def run =
     for
-      port <- env("PORT").map(_.toIntOption).load[IO]
+      port <- env("PORT").or(default("8080")).as[Int].load[IO]
       repo <- FileRepository[IO](Path("./target/data/"))
       routes <- Http4sRoutes.make[IO](repo)
       _ <- BlazeServerBuilder[IO]
         .withExecutionContext(global)
-        .bindHttp(port.getOrElse(8080), "0.0.0.0")
+        .bindHttp(port, "0.0.0.0")
         .withHttpApp(
           routes.routes.orNotFound
         )
