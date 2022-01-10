@@ -1,1 +1,1 @@
-web: target/universal/stage/bin/shielded-inlet-25572
+web: webserver/target/universal/stage/bin/webserver
