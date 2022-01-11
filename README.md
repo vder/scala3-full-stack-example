@@ -12,6 +12,8 @@ used techstack:
 - scalatags
 - tapir & sttp
 
+App is preconfigured to be deployable on heroku
+
 Below is original readme.MD
 
 ## Example full-stack Scala 3 project
